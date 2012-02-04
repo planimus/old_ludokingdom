@@ -40,12 +40,8 @@ var Game = {
 			}
 		}  
 	},
-	
 	board :{
-		path: [
-			
-		
-		];
+		path: []
 		
 	}
 	
@@ -55,9 +51,14 @@ var io = require('socket.io').listen(80);
 
 io.sockets.on('connection', function (socket) {
  
-	socket.on("message", function(data){
-		console.log(data);
+	socket.on("moveTo", function(data){
+		var cord = data.cord,
+			token = data.token;
+		
+		io.sockets.emit("moveTo", data);
 	});
+	
+	
 
 
 

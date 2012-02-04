@@ -66,10 +66,25 @@ td { vertical-align: top; }
    Author: 
    ========================================================================== */
 
-#board  { width: 600px; height: 600px; margin: 0 auto; border: 1px solid black; }
-.box { width: 40px; height: 40px; float: left;}
+#board  { width: 600px; height: 600px; margin: 10px auto; border: 1px solid black; position: relative; border-left: none; border-bottom: none; }
+.box { width: 39px; height: 39px; float: left; border-left: 1px solid black; border-bottom: 1px solid black;}
 
+.token{ width: 40px; height: 40px; position: absolute;}
+#token1{ background: url('../img/red.png') top left no-repeat; }
 
+.path{ background: beige;}
+
+.green { background-color: #85c226; border-color: #85c226; }
+.blue  { background-color: #0093dd; border-color: #0093dd; }
+.red  { background-color: #da251c; border-color: #da251c; }
+.yellow { background-color: #f8c301; border-color: #f8c301; }		
+
+#center { background: url('../img/center.gif') no-repeat scroll top left; width: 119px; height: 119px; position: absolute; top: 240px; left: 241px; }
+
+#green-area{ position: absolute; width: 239px; height: 239px; border-right: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid;}
+#red-area{ position: absolute; width: 239px; height: 239px; border-right: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid; top: 360px;}
+#yellow-area{ position: absolute; width: 239px; height: 239px; border-left: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid; right: 0px; }
+#blue-area{ position: absolute; width: 239px; height: 239px; border-left: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid; bottom: 0; right: 0;}
 
 
 

@@ -4,15 +4,28 @@
 
 */
 
+var socket = undefined;
 
 $(function(){
-	var socket = io.connect('http://localhost');
+	socket = io.connect('http://localhost');
 	
 	socket.on("connect", function(){
 		log("connected to the server");
 		
+		socket.on('moveTo', function (data) {
+	     	var cord = data.cord,
+				token = data.token;
+			
+			animateTo($("#" + token), cord, function(){
+				
+			
+			});	
+				
+			
+	    });
+		
 	});
-	
+
 	//Define Paths
 	
 	var mainPath = [
@@ -33,7 +46,19 @@ $(function(){
 			[7, 7], [8, 7], [9, 7],
 			[7, 8], [8, 8], [9, 8],
 			[7, 9], [8, 9], [9, 9]
-	];		
+	];
+	
+	var startPoint = {
+		red	: [7, 14],
+		blue : [14, 9]
+	};
+	
+	var playerAreas = {
+			green	: [1, 1],
+			yellow  : [10, 1], 
+			red 	: [1, 10],
+			blue 	: [10, 10]
+	};		
 	
 	
 	//Create Board
@@ -54,8 +79,8 @@ $(function(){
 		
 		var cordinate = cord.x + ", " + cord.y;
 		
-		var id = cord.x + "" + cord.y;
-			boxHtml = "<div id='"+ id +"' data-x='"+ cord.x +"' data-y='"+ cord.y +"' class='box'>"+ cordinate +"</div>";
+		var id = cord.x + "-" + cord.y;
+			boxHtml = "<div id='"+ id +"' data-x='"+ cord.x +"' data-y='"+ cord.y +"' class='box'> <span></span> </div>";
 		
 		$("#board").append(boxHtml);
 		
@@ -67,7 +92,7 @@ $(function(){
 		var x = path[0],
 			y = path[1];
 			
-		$("#" + x + y).addClass("path");	
+		$("#" + x + "-" +  y).addClass("path");	
 			
 	});
 	
@@ -77,7 +102,7 @@ $(function(){
 		var x = path[0],
 		y = path[1];
 			
-		$("#" + x + y).addClass("center");
+		$("#" + x + "-" +  y ).addClass("center");
 		
 	});
 	
@@ -85,33 +110,112 @@ $(function(){
 	function determineArea(startPoint){
 		var area = new Array();
 		
-		for (var i = 0; i < 36; i++) {
+		for (var y = startPoint[1]; y <= startPoint[1] + 5; y++) {
 			
-	
-			area.push(point); 
+			for (var x = startPoint[0]; x <= startPoint[0] + 5; x++) {
+				area.push([x, y]);
+			};
 			
 		};
 		
+		return area;
+		
 	}
 	
+	$.each(playerAreas, function(player, areaPoint){
+		
+		var area = determineArea(areaPoint);
+		
+		$.each(area, function(index, path){
+			
+			var x = path[0],
+				y = path[1];
+
+			$("#" + x + "-" +  y).addClass(player);
+			
+		});
+		
+		
+	});	
+
+	
+	//Animmate around the board
+	function animateTo(token ,cord, callback){
+
+		//derive the position
+		var left = (cord[0] - 1) * 40;
+		var top = (cord[1] - 1) * 40;
+
+		token.animate({ left : left + "px", top : top + "px"}, 500, function(){
+			callback();
+		}) 
+	}
 	
 
+
+	function around(loc){
+		var black = $("#black");
+		if(loc != mainPath.length - 1)
+			loc = loc + 1;
+		else
+			loc = 0;
+		
+		
+		var cord = mainPath[loc];
+		animateTo(black, cord, function(){
+			around(loc)
+		});
+
+	}
+
+
+	$("#7-14").css("background-color", "#da251c");
+	$("#8-14").css("background-color", "#da251c");
+	$("#8-13").css("background-color", "#da251c");	
+	$("#8-12").css("background-color", "#da251c");
+	$("#8-11").css("background-color", "#da251c");
+	$("#8-10").css("background-color", "#da251c");
+	
+	
+	
+	
+	$("#14-9").css("background-color", "#0093dd");
+	$("#14-8").css("background-color", "#0093dd");
+	$("#13-8").css("background-color", "#0093dd");	
+	$("#12-8").css("background-color", "#0093dd");
+	$("#11-8").css("background-color", "#0093dd");
+	$("#10-8").css("background-color", "#0093dd");
+	
+	
+	
+	
+	$("#2-7").css("background-color", "#85C226");
+	$("#3-8").css("background-color", "#85C226");
+	$("#4-8").css("background-color", "#85C226");	
+	$("#5-8").css("background-color", "#85C226");
+	$("#6-8").css("background-color", "#85C226");
+	$("#2-8").css("background-color", "#85C226");
+	
+	
+	
+	$("#9-2").css("background-color", "#f8c301");
+	$("#8-2").css("background-color", "#f8c301");
+	$("#8-3").css("background-color", "#f8c301");	
+	$("#8-4").css("background-color", "#f8c301");
+	$("#8-5").css("background-color", "#f8c301");
+	$("#8-6").css("background-color", "#f8c301");
+	
+	
+	animateTo($("#token1"), startPoint.red, function(){});
+	
+	$(".box").click(function(){
+		var x = parseInt($(this).attr("data-x")),
+			y = parseInt($(this).attr("data-y"));
+		
+		socket.emit("moveTo", {token: "token1", cord : [ x, y] });
+	});
+	
 });	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -3,3 +3,4 @@ window.log=function(){log.history=log.history||[];log.history.push(arguments);if
 {console.log();return window.console;}catch(err){return window.console={};}})());
 
 
+
