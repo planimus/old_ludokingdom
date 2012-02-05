@@ -7,7 +7,7 @@
 var socket = undefined;
 
 $(function(){
-	socket = io.connect('http://localhost');
+	socket = io.connect();
 	
 	socket.on("connect", function(){
 		log("connected to the server");
