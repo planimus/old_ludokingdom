@@ -67,7 +67,7 @@ td { vertical-align: top; }
    ========================================================================== */
 
 #board  { width: 600px; height: 600px; margin: 10px auto; border: 1px solid black; position: relative; border-left: none; border-bottom: none; }
-.box { width: 6.5%; height: 6.5%; float: left; border-left: 1px solid black; border-bottom: 1px solid black;}
+.box { width: 6.667%; height: 6.667%; float: left; }
 
 .token{ width: 6.5%; height: 6.5%; position: absolute;}
 .token-img{ width: 100%; height: 100%;}

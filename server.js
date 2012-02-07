@@ -70,6 +70,20 @@ server.get('/', function(req,res){
 });
 
 
+server.get('/game', function(req,res){
+  res.render('game.jade', {
+    locals : {
+	        title : 'Ludo Kingdom'
+            ,description: 'This is about ludo kingdom'
+            ,author: 'Kenrick Beckett'
+			,text: 'say somthing!'
+	
+    }
+  });
+});
+
+
+
 //A Route for Creating a 500 Error (Useful to keep around)
 server.get('/500', function(req, res){
     throw new Error('This is a 500 Error');
