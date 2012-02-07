@@ -5,6 +5,7 @@
 */
 
 var socket = undefined;
+var animateTo = undefined;
 
 $(function(){
 	socket = io.connect();
@@ -140,13 +141,13 @@ $(function(){
 
 	
 	//Animmate around the board
-	function animateTo(token ,cord, callback){
+	animateTo = function(token ,cord, callback){
 
 		//derive the position
-		var left = (cord[0] - 1) * 40;
-		var top = (cord[1] - 1) * 40;
+		var left = (cord[0] - 1) * 6.69;
+		var top = (cord[1] - 1) * 6.67;
 
-		token.animate({ left : left + "px", top : top + "px"}, 500, function(){
+		token.animate({ left : left + "%", top : top + "%"}, 500, function(){
 			callback();
 		}) 
 	}
@@ -206,13 +207,13 @@ $(function(){
 	$("#8-6").css("background-color", "#f8c301");
 	
 	
-	animateTo($("#token1"), startPoint.red, function(){});
+	animateTo($("#token3"), startPoint.red, function(){});
 	
 	$(".box").click(function(){
 		var x = parseInt($(this).attr("data-x")),
 			y = parseInt($(this).attr("data-y"));
 		
-		socket.emit("moveTo", {token: "token1", cord : [ x, y] });
+		socket.emit("moveTo", {token: "token3", cord : [ x, y] });
 	});
 	
 });	
