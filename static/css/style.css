@@ -67,7 +67,7 @@ td { vertical-align: top; }
    ========================================================================== */
 
 #board  { width: 600px; height: 600px; margin: 10px auto; border: 1px solid black; position: relative; border-left: none; border-bottom: none; }
-.box { width: 39px; height: 39px; float: left; border-left: 1px solid black; border-bottom: 1px solid black;}
+.box { width: 6.5%; height: 6.5%; float: left; border-left: 1px solid black; border-bottom: 1px solid black;}
 
 .token{ width: 40px; height: 40px; position: absolute;}
 #token1{ background: url('../img/red.png') top left no-repeat; }
@@ -105,12 +105,38 @@ td { vertical-align: top; }
 
 /* ==|== media queries ====================================================== */
 
-@media only screen and (min-width: 480px) {
-
-
+/* MOBILE PORTRAIT */
+@media only screen and (min-width: 320px) {
+	#board  { width: 315px; height: 315px; margin: 0px auto;}
 }
 
-@media only screen and (min-width: 768px) {
+/* MOBILE LANDSCAPE */
+@media only screen and (min-width: 480px) {
+	#board  { width: 480px; height: 480px;  }
+}
+
+/* SMALL TABLET */
+@media only screen and (min-width: 600px) {
+	#board  { width: 480px; height: 480px; margin: 10px auto;  }
+}
+
+/* TABLET/NETBOOK */
+@media only screen and (min-width: 768px) { 
+	#board  { width: 600px; height: 600px; margin: 10px auto; border: 1px solid black; position: relative; border-left: none; border-bottom: none; }
+}
+
+/* LANDSCAPE TABLET/NETBOOK/LAPTOP */
+@media only screen and (min-width: 1024px) { 
+
+	#board  { width: 600px; height: 600px; margin: 10px auto; border: 1px solid black; position: relative; border-left: none; border-bottom: none; }
+}
+/* DESKTOP */
+@media only screen and (min-width: 1280px) { 	
+	#board  { width: 600px; height: 600px; margin: 10px auto; border: 1px solid black; position: relative; border-left: none; border-bottom: none; }
+}
+/* WIDESCREEN */
+/* Increased body size for legibility */
+@media only screen and (min-width: 1400px) { 
 
 }
 
