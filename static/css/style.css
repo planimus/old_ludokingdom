@@ -80,14 +80,14 @@ td { vertical-align: top; }
 .red  { background-color: #da251c; border-color: #da251c; }
 .yellow { background-color: #f8c301; border-color: #f8c301; }		
 
-#center { background: url('../img/center.gif') no-repeat scroll top left; width: 119px; height: 119px; position: absolute; top: 240px; left: 241px; }
+#center { background: url('/img/center.gif') no-repeat scroll top left; width: 119px; height: 119px; position: absolute; top: 240px; left: 241px; }
 
 .area{position: absolute; width: 39.9%; height: 39.9%;}
 
 #green-area{ border-right: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid;}
-#red-area{ position: absolute; width: 239px; height: 239px; border-right: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid; top: 360px;}
-#yellow-area{ position: absolute; width: 239px; height: 239px; border-left: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid; right: 0px; }
-#blue-area{ position: absolute; width: 239px; height: 239px; border-left: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid; bottom: 0; right: 0;}
+#red-area{ border-right: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid; top: 60%;}
+#yellow-area{ border-left: 1px solid black; border-bottom: 1px solid black; right: 0%; }
+#blue-area{ border-left: 1px solid black; border-bottom: 1px solid black; bottom: 0%; right: 0%;}
 
 
 
