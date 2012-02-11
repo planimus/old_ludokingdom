@@ -157,6 +157,8 @@ io.sockets.on('connection', function(socket){
 				console.log(player, "is not free");
 			}
 		}
+		
+		console.log(ludo.players)
 	});
 	
 	socket.on("moveTo", function(data){
@@ -173,13 +175,15 @@ io.sockets.on('connection', function(socket){
 
 	socket.on('disconnect', function () {
 	    socket.get("player", function (err, player){
+			console.log(player, "is now free");
+
 			if(!err && player != undefined) {
 				
 				ludo.players[player].socket = undefined;
 				io.sockets.emit("free spot");
-				
 			}
 		
+		 
 		});
 	});
 
