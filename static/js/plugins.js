@@ -36,6 +36,16 @@ window.log=function(){log.history=log.history||[];log.history.push(arguments);if
 		yellow  : [10, 1], 
 		red 	: [1, 10],
 		blue 	: [10, 10]
+	},
+	ping : function() {
+		var start = (new Date).getTime();
+	
+		$.ludo.socket.emit("ping", function() {
+		 	var diff = (new Date).getTime() - start;
+		
+			log("ping", diff + "ms");
+		});
+		
 	},		
 	
  }
@@ -48,7 +58,7 @@ window.log=function(){log.history=log.history||[];log.history.push(arguments);if
 	      	// $(this).board("createGridLinesOverlay");
 			$(this).board("createBoxOverlay");
 			
-			$(this).delegate(".path", "click", function(){
+			$(this).delegate(".path", "click", function() {
 				var x = parseInt($(this).attr("data-x")),
 				    y = parseInt($(this).attr("data-y"));
 				if($.ludo.player != undefined) {

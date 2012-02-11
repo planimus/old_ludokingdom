@@ -151,6 +151,10 @@ io.sockets.on('connection', function(socket){
 		ludo.players[token].token = cord;	
 		io.sockets.emit("moveTo", data);
 	});
+	
+	socket.on("ping", function(fn){
+		fn();
+	});
 
 	socket.on('disconnect', function () {
 	    socket.get("player", function (err, player){
