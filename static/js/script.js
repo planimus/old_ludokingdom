@@ -8,22 +8,56 @@ $(function(){
 	
 	$.ludo.socket = io.connect();
 	
-	$.ludo.socket.on("connect", function(){
+	$.ludo.socket.on("connect", function (){
 		log("connected to the server");
+		$("#board").board();	
+		log("Created board");
+		
+		$.ludo.socket.on("tokenLocations", function (tokens) {
+			if($.ludo.present === undefined) {
+				$.each(tokens, function (token, coord) {
+					var token = $("<div />", {
+						html : "<img class='token-img' src='/img/"+ token +".png' />", 
+						class : "token",
+						id : token + "token", 
+					});
+					token.jumpTo(coord);
+					$("#board").append(token)
+				});
+			}
+			$.ludo.present = true;
+			$.ludo.socket.emit("request spot");
+
+		});
+		
+		$.ludo.socket.on('Assign player', function (player) {
+	     	$.ludo.player = player;
+			log("You are now", player);
+	    });
 		
 		$.ludo.socket.on('moveTo', function (data) {
 	     	var cord = data.cord,
 				token = data.token;
 			
-			$("#" + token).animateTo(cord);	
-			
-			log(data);
+			$("#" + token + "token").animateTo(cord);	
 	    });
+	
+		$.ludo.socket.on("free spot", function () {
+			if($.ludo.player === undefined)
+			{
+				$.ludo.socket.emit("request spot");
+			}
+		}); 
+		
+		$.ludo.socket.on("disconnect", function () {
+			$.ludo.player == undefined;
+			log("we have been disconnected");
+		});
 		
 	});
 	
-	$("#board").board();
 	
+/*	
 	var token = $("<div />", {
 		html : "<img class='token-img' src='/img/red.png' />", 
 		class : "token",
@@ -34,7 +68,7 @@ $(function(){
 	
 	$("#board").append(token)
 	
-
+*/
 
 /*
 	$("#7-14").css("background-color", "#da251c");

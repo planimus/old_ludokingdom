@@ -36,18 +36,133 @@ server.error(function(err, req, res, next){
 });
 server.listen( port);
 
+/*
+var ludo = new function () {
+	this.getGame = function (name) {
+		return this.Game[name]; 
+	}
+	
+	this.Game = {
+			board : {
+				path:  [
+					[7, 1], [8, 1],	[9, 1],
+					[9, 2], [9, 3], [9, 4], [9, 5], [9, 6],
+					[10, 7], [11, 7], [12, 7], [13, 7], [14, 7],
+					[15, 7], [15, 8], [15, 9],
+					[14, 9], [13, 9], [12, 9], [11, 9], [10, 9],
+					[9, 10], [9, 11], [9, 12], [9, 13], [9, 14],
+					[9, 15], [8, 15], [7, 15],
+					[7, 14], [7, 13], [7, 12], [7, 11], [7, 10],
+					[6, 9], [5, 9], [4, 9], [3, 9], [2, 9],
+					[1, 9], [1, 8], [1, 7],
+					[2, 7], [3, 7], [4, 7], [5, 7], [6, 7],
+					[7, 6], [7, 5], [7, 4], [7, 3], [7, 2]
+				],
+				startPoint: {
+					red	: [7, 14],
+					blue : [14, 9],
+					yellow : [9, 2],
+					green  : [2, 7] 
+				},
+		
+			}
+		};	
+	
+	this.tokens = this.getGame("startPoint");	
+		
+}
+*/
+
+var Game = function ()
+{
+	this.board = {
+		path:  [
+			[7, 1], [8, 1],	[9, 1],
+			[9, 2], [9, 3], [9, 4], [9, 5], [9, 6],
+			[10, 7], [11, 7], [12, 7], [13, 7], [14, 7],
+			[15, 7], [15, 8], [15, 9],
+			[14, 9], [13, 9], [12, 9], [11, 9], [10, 9],
+			[9, 10], [9, 11], [9, 12], [9, 13], [9, 14],
+			[9, 15], [8, 15], [7, 15],
+			[7, 14], [7, 13], [7, 12], [7, 11], [7, 10],
+			[6, 9], [5, 9], [4, 9], [3, 9], [2, 9],
+			[1, 9], [1, 8], [1, 7],
+			[2, 7], [3, 7], [4, 7], [5, 7], [6, 7],
+			[7, 6], [7, 5], [7, 4], [7, 3], [7, 2]
+		],
+		startPoint: {
+			red	: [7, 14],
+			blue : [14, 9],
+			yellow : [9, 2],
+			green  : [2, 7] 
+		},
+	};	
+	
+	this.players = {
+		red : {},
+		blue : {},
+		green : {},
+		yellow : {}
+	};
+}
+
+Game.prototype.init = function () {
+
+	for(player in this.players) {		
+		this.players[player].token = this.board.startPoint[player]; 
+	}
+	
+}
+
+var ludo = new Game();
+ludo.init();
+
 //Setup Socket.IO
 var io = io.listen(server);
 io.sockets.on('connection', function(socket){
-  
+    
+    socket.emit("tokenLocations", {
+		red : ludo.players.red.token,
+		blue: ludo.players.blue.token,
+		yellow: ludo.players.yellow.token,
+		green : ludo.players.green.token
+	});
+	
+	socket.on("request spot", function () {
+		//Check if free space 
+		for(player in ludo.players) {
+			if(ludo.players[player].socket == undefined) {
+				ludo.players[player].socket = socket.id;
+				socket.set("player", player, function () {
+					socket.emit("Assign player", player);
+				});
+				break;
+			}
+			else {
+				console.log(player, "is not free");
+			}
+		}
+	});
+	
 	socket.on("moveTo", function(data){
 		var cord = data.cord,
 			token = data.token;
 		
+		ludo.players[token].token = cord;	
 		io.sockets.emit("moveTo", data);
 	});
 
-
+	socket.on('disconnect', function () {
+	    socket.get("player", function (err, player){
+			if(!err && player != undefined) {
+				
+				ludo.players[player].socket = undefined;
+				io.sockets.emit("free spot");
+				
+			}
+		
+		});
+	});
 
 });
 

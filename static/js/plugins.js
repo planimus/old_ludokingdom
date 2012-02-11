@@ -51,7 +51,9 @@ window.log=function(){log.history=log.history||[];log.history.push(arguments);if
 			$(this).delegate(".path", "click", function(){
 				var x = parseInt($(this).attr("data-x")),
 				    y = parseInt($(this).attr("data-y"));
-				$.ludo.socket.emit("moveTo", {token: "token3", cord : [ x, y] });
+				if($.ludo.player != undefined) {
+					$.ludo.socket.emit("moveTo", {token: $.ludo.player, cord : [ x, y] });
+				}
 			});
 			
 			
