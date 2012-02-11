@@ -117,6 +117,8 @@ Game.prototype.init = function () {
 var ludo = new Game();
 ludo.init();
 
+
+
 //Setup Socket.IO
 var io = io.listen(server);
 
@@ -132,8 +134,6 @@ io.set('transports', [                     // enable all transports (optional if
   , 'jsonp-polling'
 ]);
 
-
-
 io.sockets.on('connection', function(socket){
     
     socket.emit("tokenLocations", {
@@ -146,7 +146,7 @@ io.sockets.on('connection', function(socket){
 	socket.on("request spot", function () {
 		//Check if free space 
 		for(player in ludo.players) {
-			if(ludo.players[player].socket == undefined) {
+			if(ludo.players[player].socket == undefined || ludo.players[player].socket == socket.id) {
 				ludo.players[player].socket = socket.id;
 				socket.set("player", player, function () {
 					socket.emit("Assign player", player);
@@ -174,6 +174,7 @@ io.sockets.on('connection', function(socket){
 	});
 
 	socket.on('disconnect', function () {
+		
 	    socket.get("player", function (err, player){
 			console.log(player, "is now free");
 
@@ -182,8 +183,6 @@ io.sockets.on('connection', function(socket){
 				ludo.players[player].socket = undefined;
 				io.sockets.emit("free spot");
 			}
-		
-		 
 		});
 	});
 
