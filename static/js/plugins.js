@@ -66,7 +66,7 @@ window.log=function(){log.history=log.history||[];log.history.push(arguments);if
             var self = $(this);
 			
 			var start = (new Date).getTime();
-	        self.append(self.board("createGridLinesOverlay"));
+	        //self.append(self.board("createGridLinesOverlay"));
 			self.append(self.board("createBoxOverlay"));
 
 			var diff = (new Date).getTime() - start;
