@@ -63,13 +63,12 @@ window.log=function(){log.history=log.history||[];log.history.push(arguments);if
  //Creates the board
  var boardMethods = {
  	   init : function( options ) { 
-            var fragment = document.createDocumentFragment()
-			  , self = $(this);
+            var self = $(this);
 			
 			var start = (new Date).getTime();
-	      	fragment.appendChild(self.board("createGridLinesOverlay")[0]);
-			fragment.appendChild(self.board("createBoxOverlay")[0]);
-			self.append(fragment);
+	        self.append(self.board("createGridLinesOverlay"));
+			self.append(self.board("createBoxOverlay"));
+
 			var diff = (new Date).getTime() - start;
 		
 			log("created board in", diff + "ms");
