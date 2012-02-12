@@ -2,6 +2,7 @@ window.log=function(){log.history=log.history||[];log.history.push(arguments);if
 (function(b){function c(){}for(var d="assert,count,debug,dir,dirxml,error,exception,group,groupCollapsed,groupEnd,info,log,timeStamp,profile,profileEnd,time,timeEnd,trace,warn".split(","),a;a=d.pop();){b[a]=b[a]||c}})((function(){try
 {console.log();return window.console;}catch(err){return window.console={};}})());
 
+//FIXME: Iphone and blackberry issue
 
 
 (function( $ ){
@@ -31,7 +32,7 @@ window.log=function(){log.history=log.history||[];log.history.push(arguments);if
 		red :[ [8,14],[8,13],[8,12],[8,11],[8,10] ],
 		blue :[ [14,8],[13,8],[12,8],[11,8],[10,8] ],
 		green :[ [2,8],[3,8],[4,8],[5,8],[6,8] ],
-		yellow :[ [8,2],[8,3],[8,4],[8,5],[8,6] ],
+		yellow :[ [8,2],[8,3],[8,4],[8,5],[8,6] ]
 		
 	},
 	startPoint: {
@@ -149,12 +150,12 @@ window.log=function(){log.history=log.history||[];log.history.push(arguments);if
 			}); 	
 			for (var i = 1; i <= 14; i++) {
 				var horizontalLine = $("<div />",{
-					id : "hl" + i,
+				//	id : "hl" + i,
 					"class" : "hLine",
 				});
 				
 				var verticalLine =  $("<div />",{
-					id : "vl" + i,
+				//	id : "vl" + i,
 					"class" : "vLine",
 				});
 				
