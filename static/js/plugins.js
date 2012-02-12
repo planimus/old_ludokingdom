@@ -27,9 +27,18 @@ window.log=function(){log.history=log.history||[];log.history.push(arguments);if
 		[7, 8], [8, 8], [9, 8],
 		[7, 9], [8, 9], [9, 9]
 	],
+	heavenPoint : {
+		red :[ [8,14],[8,13],[8,12],[8,11],[8,10] ],
+		blue :[ [14,8],[13,8],[12,8],[11,8],[10,8] ],
+		green :[ [2,8],[3,8],[4,8],[5,8],[6,8] ],
+		yellow :[ [8,2],[8,3],[8,4],[8,5],[8,6] ],
+		
+	},
 	startPoint: {
 		red	: [7, 14],
-		blue : [14, 9], 
+		blue : [14, 9],
+		yellow : [9, 2],
+		green  : [2, 7] 
 	},
 	playerAreas: {
 		green	: [1, 1],
@@ -54,11 +63,18 @@ window.log=function(){log.history=log.history||[];log.history.push(arguments);if
  //Creates the board
  var boardMethods = {
  	   init : function( options ) { 
-	
-	      	// $(this).board("createGridLinesOverlay");
-			$(this).board("createBoxOverlay");
+            var fragment = document.createDocumentFragment()
+			  , self = $(this);
 			
-			$(this).delegate(".path", "click", function() {
+			var start = (new Date).getTime();
+	      	fragment.appendChild(self.board("createGridLinesOverlay")[0]);
+			fragment.appendChild(self.board("createBoxOverlay")[0]);
+			self.append(fragment);
+			var diff = (new Date).getTime() - start;
+		
+			log("created board in", diff + "ms");
+			
+			self.delegate(".path", "click", function() {
 				var x = parseInt($(this).attr("data-x")),
 				    y = parseInt($(this).attr("data-y"));
 				if($.ludo.player != undefined) {
@@ -123,7 +139,8 @@ window.log=function(){log.history=log.history||[];log.history.push(arguments);if
 					
 			};
 			boxOverlay = self.markBoxes(boxOverlay);
-			$(this).append(boxOverlay);
+			
+			return boxOverlay;
 			
 	    },
 	    createGridLinesOverlay : function( ) { 
@@ -133,10 +150,12 @@ window.log=function(){log.history=log.history||[];log.history.push(arguments);if
 			}); 	
 			for (var i = 1; i <= 14; i++) {
 				var horizontalLine = $("<div />",{
+					id : "hl" + i,
 					"class" : "hLine",
 				});
 				
 				var verticalLine =  $("<div />",{
+					id : "vl" + i,
 					"class" : "vLine",
 				});
 				
@@ -148,7 +167,7 @@ window.log=function(){log.history=log.history||[];log.history.push(arguments);if
 
 			}
 			
-			$(this).append(lines);
+			return lines;
 			
 	    },
 	    markBoxes : function(boxOverlay) { 
@@ -184,9 +203,33 @@ window.log=function(){log.history=log.history||[];log.history.push(arguments);if
 					var x = path[0],
 						y = path[1];
 
-					$(boxOverlay).find("#x" + x + "y" + y ).addClass(player);
+					$(boxOverlay).find("#x" + x + "y" + y ).addClass(player + " player_area");
 
 				});
+
+
+			});
+			
+			$.each($.ludo.heavenPoint, function(player, points){
+				
+				for (var i = 0; i < points.length; i++)
+				{
+					var x = points[i][0],
+						y = points[i][1];
+
+					$(boxOverlay).find("#x" + x + "y" + y ).addClass(player);
+
+				}	
+
+			});
+			
+			
+			$.each($.ludo.startPoint, function(player, point){
+
+				var x = point[0],
+					y = point[1];
+
+				$(boxOverlay).find("#x" + x + "y" + y ).addClass(player);
 
 
 			});
