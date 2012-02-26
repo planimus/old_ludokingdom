@@ -1,6 +1,5 @@
 //setup Dependencies
-var connect = require('connect')
-    , express = require('express')
+var express = require('express')
     , io = require('socket.io')
     , port = (process.env.PORT || 8081);
 
@@ -8,10 +7,12 @@ var connect = require('connect')
 var server = express.createServer();
 server.configure(function(){
     server.set('views', __dirname + '/views');
+	server.set('view engine', 'jade');
     server.use(connect.bodyParser());
     server.use(express.cookieParser());
     server.use(express.session({ secret: "shhhhhhhhh!"}));
-    server.use(connect.static(__dirname + '/static'));
+	server.use(require('stylus').middleware({ src: __dirname + '/public', dest:  }));
+    server.use(express.static(__dirname + '/static'));
     server.use(server.router);
 });
 
