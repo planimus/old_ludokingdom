@@ -33,6 +33,11 @@ ehthumbs.db
 Icon?
 Thumbs.db
 
+# Precompiled Files #
+#####################
+public/javascripts/application*
+public/stylesheets/application*
+
 # Unnesscary Files #
 ######################
 
