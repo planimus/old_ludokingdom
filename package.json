@@ -2,18 +2,15 @@
   "name": "LudoKingdom",
   "description": "A free online multiplayer based on the popular board game ludo",
   "author": "Kenrick Beckett <kenrick.beckett@gmail.com>",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": {
     "connect": "1.8.5",
     "express": "2.5.2",
     "jade": "0.20.0",
     "mongoose": "2.4.8",
-    "socket.io": "0.8.7"
-  },
-  "devDependencies": {
-    "vows": "0.5.x",
-	"mocha": "*",
-	"should": "*"
+    "socket.io": "0.8.7",
+    "coffee-script": "1.2.0",
+    "nodewatch": "0.1.0"
   },
   "engine": "node >= 0.6.6"
 }
