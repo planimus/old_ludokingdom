@@ -7,7 +7,7 @@ appWatcher 		= 	watch
 
 nodeInstance 	=	false
 
-projectDir 		=	"/Users/kenrick/Projects/ludokingdom"
+projectDir 		=	"#{__dirname}"
 assets 			=	"#{ projectDir }/assets"
 configFile 		=	"#{ projectDir }/config.json"
 
