@@ -15,7 +15,7 @@ jsDir			=	"#{ projectDir }/public/javascripts"
 coffeeFiles		=	"#{ projectDir }/assets/coffee"
 
 lessFiles 		=	"#{ projectDir }/assets/less"
-lessIncPaths	=	["bootstrap/less/"]
+lessIncPaths	=	["bootstrap/"]
 cssDir 			=	"#{ projectDir }/public/stylesheets"
 
 config 			= require configFile
