@@ -1,4 +1,4 @@
-var app, config, express, io, routes, siteGlobals;
+var app, config, express, io, routes, siteGlobals, sockets;
 
 express = require('express');
 
@@ -27,6 +27,13 @@ app.configure(function() {
   return app.set('view options', {
     locals: siteGlobals
   });
+});
+
+sockets = io.listen(app).sockets;
+
+sockets.on("connection", function(socket) {
+  console.log("we are ready2");
+  return socket.emit("ready");
 });
 
 app.get('/', routes.index);

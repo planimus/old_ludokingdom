@@ -100,7 +100,7 @@ task 'compile:less', 'Compliles the less source into css', (callback) ->
 		include_paths += "#{lessFiles}/libs/#{path}:"
 	include_paths = include_paths[0..include_paths.length - 2]
 	csshash = generateHash()
-	exec "lessc --yui-compress --include-path=#{include_paths}  #{lessFiles}/application.less #{cssDir}/application.#{csshash}.css", (err, stdout, stderr) ->
+	exec "lessc --include-path=#{include_paths}  #{lessFiles}/application.less #{cssDir}/application.#{csshash}.css", (err, stdout, stderr) ->
 		if err
 			console.log "#{stdout}  #{stderr}"
 			#throw err

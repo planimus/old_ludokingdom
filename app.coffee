@@ -23,6 +23,11 @@ app.configure ->
 
 
 
+sockets = io.listen(app).sockets
+
+sockets.on "connection", (socket) ->
+  console.log "we are ready2"
+  socket.emit("ready")
 
 app.get '/', routes.index;
  
