@@ -1,3 +1,20 @@
+class Game
+  players: {}
+
+  constructor: (@name) -> console.log("Game created called #{@name} ")
+
+  join: (socket) =>
+    console.log("new user Joined")
+    @players["#{socket.id}"] =
+      type: "player"
+      location: 0
+    
+    @bindGameEvents(socket)
+
+  bindGameEvents: (socket) =>
+    socket.on "moved", (location) ->
+      @players[socket.id].location = location
+
 express = require 'express'
 routes = require './routes'
 config = require './config.json'
@@ -21,13 +38,19 @@ app.configure ->
   app.use(express.static("#{__dirname}/public"));
   app.set 'view options', locals: siteGlobals
 
+games = {}
+
+games["castle"] = new Game("castle")
 
 
 sockets = io.listen(app).sockets
 
 sockets.on "connection", (socket) ->
-  console.log "we are ready2"
   socket.emit("ready")
+
+  socket.on "join game", (data, func) ->
+    games[data.name].join socket 
+    func()  
 
 app.get '/', routes.index;
  

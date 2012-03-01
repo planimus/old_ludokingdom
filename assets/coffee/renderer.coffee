@@ -9,12 +9,18 @@ class Render
 	createBoard : (@paths) -> 
 		boardEl = $("#board")
 
-		boardEl.append @createBoxOverlay()
+		@board = $ "<div />", id : "overlay", class : "boardOverlay"
 
-	createBoxOverlay: ->
+		@board = @createGridLinesOverlay(@board)
+		@board = @createBoxOverlay(@board)
+		@board = @createTeamArea(@board)
+
+		boardEl.append @board 
+
+	createBoxOverlay: (board) ->
 		line = 1
 		lineDiv = $ "<div />",  id : "line#{line}", class : "line"
-		boxOverlay = $ "<div />", id : "boxOverlay", class : "boardOverlay"
+		boxOverlay = board	
 		count = 0
 		teamAreas = {}
 		
@@ -25,7 +31,6 @@ class Render
 					cord: point
 					team: team
 
-		console.log teamAreas
 				
 		for i in [0..225]
 
@@ -60,8 +65,6 @@ class Render
 
 			for team, paths of @paths.heavenPoint
 				box.addClass team if cordinate of paths
-
-
 			
 			lineDiv.append box
 			
@@ -69,11 +72,35 @@ class Render
 
 		return boxOverlay
 
+	createGridLinesOverlay : (board) -> 
+		lines = board
+		for i in [1..14]
+			horizontalLine = $ "<div />", id : "hl" + i, "class" : "hLine"
+			verticalLine =  $ "<div />", id : "vl" + i, "class" : "vLine"
+			
+			spacing = 6.667 * i
+			
+			horizontalLine.css "top", "#{spacing}%"
+			verticalLine.css "left", "#{spacing}%"
+			
+			lines.append horizontalLine
+			lines.append verticalLine
 
+			
+		return lines
+
+	createTeamArea : (board) -> 
+		areas = board
+		for team, point of @paths.teamAreas
+			area = $ "<div />", id : "#{team}_area" , "class" : "team_area"
+			areas.append area
+
+		return areas	
+		
 	determineArea : (startPoint) ->
 		area = []
 		for y in [startPoint[1]..(startPoint[1] + 5)]
-			for x in [startPoint[1]..(startPoint[1] + 5)]
+			for x in [startPoint[0]..(startPoint[0] + 5)]
 				area.push([x, y]);
 		return area;
 

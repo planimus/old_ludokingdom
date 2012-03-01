@@ -17,9 +17,13 @@ class Network
 
 		@socket.on "ready", @onReady
 			
+	onReady: =>
+		@joinGame()
 
-	onReady: ->
-		console.log "we are ready"
+	joinGame: =>
+		console.log("joining castle")
+		@socket.emit "join game", name: "castle", ->
+			console.log("joined castle")
 
 
 

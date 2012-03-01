@@ -4,7 +4,14 @@
 @blue: #0093dd;
 @yellow: #f8c301;
 @green: #85c226;
+@box_size: 100/15%;
 
+.team_area_size_position (@x: 1, @y: 1) {
+	width: @box_size * 6;
+	height: @box_size * 6;
+	left: @x * @box_size - @box_size;
+	top: @y * @box_size - @box_size;
+}
 
 body{
 	
@@ -28,7 +35,7 @@ body{
 			position: absolute;
 
 			.line{
-				height: 100/15%; 
+				height: @box_size; 
 				float: left; 
 				width: 100%; 
 
@@ -39,7 +46,7 @@ body{
 				}
 
 				.box{
-					width: 100/15%; 
+					width: @box_size; 
 					height: 100%; 
 					float: left; 
 					position: relative; 
@@ -71,11 +78,37 @@ body{
 
 				#x8y8 {background: #FFF}
 
+			}
+
+
+			.hLine { width: 100%; border-top: 1px solid black; position: absolute; z-index: 100;}
+			.vLine { height: 100%; border-left: 1px solid black; position: absolute; z-index: 100; }
+
+			#hl6, #vl6, #hl9, #vl9{ z-index: 500;}
+
+			.team_area{
+				z-index: 400;
+				position: absolute;
+			}
+
+			#green_area{ 
+				.team_area_size_position(1, 1);
+				background: @green;
+			}
+			#yellow_area{ 
+				.team_area_size_position(10, 1);
+				background: @yellow;
+			}
+			#blue_area{ 
+				.team_area_size_position(10, 10);
+				background: @blue;
+			}
+			#red_area{
+				.team_area_size_position(1, 10); 
+				background: @red;
 			} 
 
-
 		}
-		
 		
 	}
 }
