@@ -1,4 +1,4 @@
-var app, config, express, game, games, io, manager, routes, siteGlobals, sockets;
+var app, config, express, game, gameManager, io, manager, routes, siteGlobals, socketManager, sockets;
 
 express = require('express');
 
@@ -33,13 +33,15 @@ app.configure(function() {
   });
 });
 
-games = {};
-
-games["castle"] = game.createGame("castle");
-
 sockets = io.listen(app).sockets;
 
-sockets = manager.sockets(sockets);
+socketManager = manager.sockets(sockets);
+
+gameManager = manager.games(sockets);
+
+gameManager.createGame("castle");
+
+gameManager.createGame("blue");
 
 app.get('/', routes.index);
 

@@ -4,18 +4,22 @@
 
 class Render
 
-	constructor : -> console.log("view ready")
+	constructor : -> 
+		console.log("view ready")
+		@main = $("#main")
 
 	createBoard : (@paths) -> 
-		boardEl = $("#board")
 
-		@board = $ "<div />", id : "overlay", class : "boardOverlay"
+		boardEl = $ "<div />", id : "board"
+		@overlay = $ "<div />", id : "overlay", class : "boardOverlay"
 
-		@board = @createGridLinesOverlay(@board)
-		@board = @createBoxOverlay(@board)
-		@board = @createTeamArea(@board)
+		@overlay = @createGridLinesOverlay(@overlay)
+		@overlay = @createBoxOverlay(@overlay)
+		@overlay = @createTeamArea(@overlay)
 
-		boardEl.append @board 
+		boardEl.append @overlay
+
+		@main.append boardEl
 
 	createBoxOverlay: (board) ->
 		line = 1
@@ -104,7 +108,62 @@ class Render
 				area.push([x, y]);
 		return area;
 
-	
+
+	showAvaliableGames: (games) =>
+		well = $ "<ul />", id : "" , "class" : "well"
+		navList = $ "<ul />", id : "" , "class" : "nav nav-list"
+		navList.append 	$ "<li />", id : "" , "class" : "nav-header", "html" : "Games list"
+		
+		for game in games
+			navList.append 	$ "<li />", id : "" ,  "html" : game
+			console.log game
+		well.append navList	
+		@main.append well	
+
+
+	requestName: (callback) ->
+		name = null 
+		template =  '<div class="modal-header">
+					    <h3>What should we call yah</h3>
+				  	</div>
+				  	<div class="modal-body">
+				    	<form class="well">
+							  <label>Your Name</label>
+							  <input type="text" id="your_name" class="span3" placeholder="Type it here">
+							  <span class="help-inline">:)</span>	
+							  <p><button id="request_name" type="submit" class="btn">Save</button><p>
+						</form>
+				  	</div>'
+
+		modal = @createModalIfNone()
+		modal.html template
+		modal.modal "show"
+
+		$("#request_name").click (e) ->
+			e.preventDefault()
+			name = $("#your_name").val()
+			if name?
+				modal.modal "hide"
+			return false
+
+		modal.on "hide", ->
+			callback(name)
+			
+	createModalIfNone: =>
+		if @elementExists $ "#modal"
+			modal = $ "#modal"
+		else
+			modal = $ "<div />",  id : "#modal", class: "modal fade"
+			modal.modal
+				keyboard: false
+				show: false	
+			$("body").append modal
+
+		return modal
+
+	elementExists: (el) ->
+		return false
+		return true if el.lenght isnt 0	
 
 
 

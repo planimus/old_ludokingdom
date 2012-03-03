@@ -5,4 +5,5 @@
 Events = 
 	"dom.ready" : $.Callbacks()
 	"network.connected" : $.Callbacks()
+	"network.request.name" : $.Callbacks()
 	

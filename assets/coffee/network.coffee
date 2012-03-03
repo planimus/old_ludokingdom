@@ -12,19 +12,24 @@ class Network
 	
 	bindEvents: =>
 		@socket.on "connect", ->
-			console.log "connected to game server"
 			Events["network.connected"].fire()
 
 		@socket.on "ready", @onReady
+
+		@socket.on "request player name", (fn) ->
+			Events["network.request.name"].fire(fn)
+			
 			
 	onReady: =>
-		@joinGame()
+		#@joinGame()
 
 	joinGame: =>
-		console.log("joining castle")
 		@socket.emit "join game", name: "castle", ->
 			console.log("joined castle")
 
+	requestAvaliableGames: (callback) =>
+		@socket.emit "request games list", (games) ->
+			callback(games)
 
 
 

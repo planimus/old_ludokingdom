@@ -13,7 +13,7 @@ siteGlobals =
 
 
 app = module.exports = express.createServer(); 
-
+ 
 app.configure ->
   app.set 'views', "#{__dirname}/views"
   app.set 'view engine', 'jade'
@@ -23,18 +23,18 @@ app.configure ->
   app.use(express.static("#{__dirname}/public"));
   app.set 'view options', locals: siteGlobals
 
-games = {}
-
-
-games["castle"] = game.createGame("castle")
 
 sockets = io.listen(app).sockets
+socketManager = manager.sockets sockets
+gameManager = manager.games sockets
 
-sockets = manager.sockets(sockets)
+
+gameManager.createGame "castle"
+gameManager.createGame "blue"
+
+app.get '/', routes.index
 
 
-
-app.get '/', routes.index;
  
-app.listen(8081);
-console.log("Game server listening on port %d in %s mode", app.address().port, app.settings.env);
+app.listen 8081
+console.log "Game server listening on port %d in %s mode", app.address().port, app.settings.env

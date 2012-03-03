@@ -112,17 +112,31 @@ class Engine
 			red 	: [1, 10]
 			blue 	: [10, 10]
 	
-	
-
-	
-
 
 	constructor : ->
 		#instantiate nesscary objects
 		@network = new Network()
 		@render = new Render()
-
+		@bindEvents()
+		
 		#perform tasks when the engine is ready 
 		@network.connect()
-		@render.createBoard(@paths)
+		#@render.createBoard(@paths)
+		@displayGames()
+
+	bindEvents: =>
+		Events["network.request.name"].add @requestName
+
+
+	requestName: (callback) =>
+		@render.requestName (name) ->
+			@name = name 
+			callback(@name)
+
+	displayGames: => 
+		@network.requestAvaliableGames (games) =>
+			@render.showAvaliableGames(games)
+
+
+
 
