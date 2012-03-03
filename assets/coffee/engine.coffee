@@ -124,6 +124,10 @@ class Engine
 		#@render.createBoard(@paths)
 		@displayGames()
 
+	
+
+
+
 	bindEvents: =>
 		Events["network.request.name"].add @requestName
 
@@ -131,11 +135,11 @@ class Engine
 	requestName: (callback) =>
 		@render.requestName (name) ->
 			@name = name 
-			callback(@name)
+			callback @name 
 
 	displayGames: => 
 		@network.requestAvaliableGames (games) =>
-			@render.showAvaliableGames(games)
+			@render.showAvaliableGames games
 
 
 

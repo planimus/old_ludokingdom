@@ -48,7 +48,7 @@ restartServer = ->
 	if nodeInstance isnt false
 		console.log "restarting app server" 
 		nodeInstance.kill()
-		console.log "-- stoped app server"
+		console.log "-- stopped app server"
 		nodeInstance = spawn("node", ["#{projectDir}/app.js"])
 		console.log "-- -- started app server"
 		nodeInstance = bindEvents nodeInstance

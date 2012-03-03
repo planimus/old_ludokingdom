@@ -28,12 +28,12 @@ Game = (function() {
 
   Game.prototype.players = {};
 
-  function Game(name) {
+  function Game(id, name) {
+    this.id = id;
     this.name = name;
     this.getName = __bind(this.getName, this);
     this.bindGameEvents = __bind(this.bindGameEvents, this);
     this.join = __bind(this.join, this);
-    console.log("Game created called " + this.name);
   }
 
   Game.prototype.join = function(socket) {
@@ -55,6 +55,6 @@ Game = (function() {
 
 })();
 
-exports.createGame = function(name) {
-  return new Game(name);
+exports.createGame = function(id, name) {
+  return new Game(id, name);
 };

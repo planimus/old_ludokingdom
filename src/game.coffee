@@ -16,7 +16,7 @@ class Player
 class Game
   players: {}
 
-  constructor: (@name) -> console.log("Game created called #{@name}")
+  constructor: (@id, @name) ->
 
   join: (socket) =>
   
@@ -32,5 +32,5 @@ class Game
     return @name
 
 
-exports.createGame = (name) ->
-  return new Game(name)
+exports.createGame = (id, name) ->
+  return new Game(id, name)

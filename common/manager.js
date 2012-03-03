@@ -1,15 +1,33 @@
-var GameManager, SocketManager, game,
+var GameManager, SocketManager, game, shortcode, uuid,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 game = require('./game.js');
 
+uuid = require('node-uuid');
+
+shortcode = function() {
+  var code, short;
+  code = uuid.v4();
+  short = code.split("-");
+  return short[1];
+};
+
 SocketManager = (function() {
 
   function SocketManager(sockets) {
+    var _this = this;
     this.sockets = sockets;
     this.sockets.on("connection", function(socket) {
-      console.log(socket.id, "connected");
-      return socket.emit("ready");
+      return socket.get("playerName", function(error, playerName) {
+        if (!(playerName != null)) {
+          return socket.emit("request player name", function(name) {
+            socket.set("playerName", name);
+            return console.log("new player created called: " + name);
+          });
+        } else {
+          return console.log(playerName);
+        }
+      });
     });
     return this.sockets;
   }
@@ -41,7 +59,10 @@ GameManager = (function() {
   }
 
   GameManager.prototype.createGame = function(name) {
-    return this.allGames[name] = game.createGame(name);
+    var id;
+    id = shortcode();
+    console.log("" + id + " : " + name);
+    return this.allGames[id] = game.createGame(id, name);
   };
 
   GameManager.prototype.joinGame = function(gameName, socket) {
@@ -54,8 +75,7 @@ GameManager = (function() {
     _ref = this.allGames;
     for (name in _ref) {
       game = _ref[name];
-      console.log(game);
-      names.push(name);
+      names.push(game.name);
     }
     return names;
   };

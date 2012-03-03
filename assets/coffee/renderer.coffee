@@ -5,8 +5,8 @@
 class Render
 
 	constructor : -> 
-		console.log("view ready")
 		@main = $("#main")
+		@viewCache = {}
 
 	createBoard : (@paths) -> 
 
@@ -110,15 +110,9 @@ class Render
 
 
 	showAvaliableGames: (games) =>
-		well = $ "<ul />", id : "" , "class" : "well"
-		navList = $ "<ul />", id : "" , "class" : "nav nav-list"
-		navList.append 	$ "<li />", id : "" , "class" : "nav-header", "html" : "Games list"
-		
-		for game in games
-			navList.append 	$ "<li />", id : "" ,  "html" : game
-			console.log game
-		well.append navList	
-		@main.append well	
+		console.log games
+		@view "gameList", "games" : games, (html) =>
+			@main.append html 	
 
 
 	requestName: (callback) ->
@@ -147,6 +141,7 @@ class Render
 			return false
 
 		modal.on "hide", ->
+			console.log name
 			callback(name)
 			
 	createModalIfNone: =>
@@ -161,6 +156,18 @@ class Render
 
 		return modal
 
+	view: (template, view, callback) =>
+		if @viewCache[template]?
+			console.log "loading from cache"
+			processed = Mustache.render @viewCache[template], view
+			callback processed
+		else	
+			$.get "views/#{template}.html", (templateHtml) =>
+				console.log "requesting over http request"
+				@viewCache[template] = templateHtml
+				processed = Mustache.render templateHtml, view
+				callback processed
+			
 	elementExists: (el) ->
 		return false
 		return true if el.lenght isnt 0	

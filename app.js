@@ -41,7 +41,7 @@ gameManager = manager.games(sockets);
 
 gameManager.createGame("castle");
 
-gameManager.createGame("blue");
+gameManager.createGame("moutain");
 
 app.get('/', routes.index);
 
