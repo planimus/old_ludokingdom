@@ -1,22 +1,7 @@
-class Game
-  players: {}
-
-  constructor: (@name) -> console.log("Game created called #{@name} ")
-
-  join: (socket) =>
-    console.log("new user Joined")
-    @players["#{socket.id}"] =
-      type: "player"
-      location: 0
-    
-    @bindGameEvents(socket)
-
-  bindGameEvents: (socket) =>
-    socket.on "moved", (location) ->
-      @players[socket.id].location = location
-
 express = require 'express'
 routes = require './routes'
+game = require './common/game.js'
+manager = require './common/manager.js'  
 config = require './config.json'
 io = require 'socket.io'
 
@@ -24,10 +9,10 @@ siteGlobals =
 	css : config.css
 	js 	: config.js
 	description : "A free online multiplayer board game based on the classic board game ludo."
-	author:	"Planimus Games <support@planimus.com>"
+	author:	"Planimus Games <support@planimus.com>" 
 
 
-app = module.exports = express.createServer();
+app = module.exports = express.createServer(); 
 
 app.configure ->
   app.set 'views', "#{__dirname}/views"
@@ -40,17 +25,14 @@ app.configure ->
 
 games = {}
 
-games["castle"] = new Game("castle")
 
+games["castle"] = game.createGame("castle")
 
 sockets = io.listen(app).sockets
 
-sockets.on "connection", (socket) ->
-  socket.emit("ready")
+sockets = manager.sockets(sockets)
 
-  socket.on "join game", (data, func) ->
-    games[data.name].join socket 
-    func()  
+
 
 app.get '/', routes.index;
  

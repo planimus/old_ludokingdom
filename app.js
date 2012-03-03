@@ -1,39 +1,12 @@
-var Game, app, config, express, games, io, routes, siteGlobals, sockets,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-Game = (function() {
-
-  Game.prototype.players = {};
-
-  function Game(name) {
-    this.name = name;
-    this.bindGameEvents = __bind(this.bindGameEvents, this);
-    this.join = __bind(this.join, this);
-    console.log("Game created called " + this.name + " ");
-  }
-
-  Game.prototype.join = function(socket) {
-    console.log("new user Joined");
-    this.players["" + socket.id] = {
-      type: "player",
-      location: 0
-    };
-    return this.bindGameEvents(socket);
-  };
-
-  Game.prototype.bindGameEvents = function(socket) {
-    return socket.on("moved", function(location) {
-      return this.players[socket.id].location = location;
-    });
-  };
-
-  return Game;
-
-})();
+var app, config, express, game, games, io, manager, routes, siteGlobals, sockets;
 
 express = require('express');
 
 routes = require('./routes');
+
+game = require('./common/game.js');
+
+manager = require('./common/manager.js');
 
 config = require('./config.json');
 
@@ -62,17 +35,11 @@ app.configure(function() {
 
 games = {};
 
-games["castle"] = new Game("castle");
+games["castle"] = game.createGame("castle");
 
 sockets = io.listen(app).sockets;
 
-sockets.on("connection", function(socket) {
-  socket.emit("ready");
-  return socket.on("join game", function(data, func) {
-    games[data.name].join(socket);
-    return func();
-  });
-});
+sockets = manager.sockets(sockets);
 
 app.get('/', routes.index);
 
