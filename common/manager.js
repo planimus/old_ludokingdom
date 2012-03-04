@@ -17,18 +17,7 @@ SocketManager = (function() {
   function SocketManager(sockets) {
     var _this = this;
     this.sockets = sockets;
-    this.sockets.on("connection", function(socket) {
-      return socket.get("playerName", function(error, playerName) {
-        if (!(playerName != null)) {
-          return socket.emit("request player name", function(name) {
-            socket.set("playerName", name);
-            return console.log("new player created called: " + name);
-          });
-        } else {
-          return console.log(playerName);
-        }
-      });
-    });
+    this.sockets.on("connection", function(socket) {});
     return this.sockets;
   }
 

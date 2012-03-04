@@ -5,6 +5,7 @@
 @yellow: #f8c301;
 @green: #85c226;
 @box_size: 100/15%;
+@token_holder_size: 160 / 240 * 100%;
 
 .team_area_size_position (@x: 1, @y: 1) {
 	width: @box_size * 6;
@@ -29,6 +30,16 @@ body{
 		border: 1px solid black; 
 		position: relative;
 
+
+		.token{
+			width: @box_size;
+			height: @box_size;
+			position: absolute;
+			display: block;
+			z-index: 1000;
+			cursor: pointer;
+		}
+
 		.boardOverlay{ 
 			width: 100%; 
 			height: 100%; 
@@ -41,7 +52,7 @@ body{
 
 
 				.path{ 
-					cursor:pointer; 
+					//cursor:pointer; 
 					background: #FFF;
 				}
 
@@ -89,6 +100,42 @@ body{
 			.team_area{
 				z-index: 400;
 				position: absolute;
+
+				.token_holder{
+
+					width: @token_holder_size;
+					height: @token_holder_size;
+					background-color: #FFF;
+					top: 17.333333%;
+					left: 17.333333%;
+					position: absolute;
+
+					.holder{
+
+						width: 36%;
+						height: 36%;
+						float: left;
+						display: block;
+						margin-left: 10%;
+						margin-top: 10%;
+					}
+
+					.green{
+						background-color: @green;
+					}
+
+					.blue{
+						background-color: @blue;
+					}
+
+					.yellow{
+						background-color: @yellow;
+					}
+
+					.red{
+						background-color: @red;
+					}
+				}
 			}
 
 			#green_area{ 

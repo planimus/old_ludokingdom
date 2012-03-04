@@ -1,6 +1,76 @@
 ###
 	Manages resources and handles the game logic
 ###
+class Token
+
+	constructor: (@team, @id, @render) ->
+		@position = 2
+
+		@el = @render.createToken @team, @id, =>
+			min = 1
+			max = 6
+			oldPosition = @position
+			random = Math.floor(Math.random() * (max - min + 1)) + min
+			@position += random
+			if @position > @render.paths.mainPathArray.length
+				diff =  @position - @render.paths.mainPathArray.length
+				@position = diff
+
+			@walkTo @render.paths.mainPathArray[oldPosition], @render.paths.mainPathArray[@position]
+			
+
+	
+	animateTo: (cord) ->
+		@render.animateTokenTo(@el, cord)
+
+	walkTo: (cordStart, cordEnd) =>
+		#map out full path
+		currPosition = @render.paths.mainPathStrings.indexOf "#{cordStart[0]},#{cordStart[1]}"
+		endPosition = @render.paths.mainPathStrings.indexOf "#{cordEnd[0]},#{cordEnd[1]}"
+		queue = []
+		queueStart = currPosition
+		path = []
+
+		if currPosition > endPosition
+			reset = false
+			len = @render.paths.mainPathArray.length - currPosition + endPosition 
+
+			for i in [0..len]
+
+				pos = currPosition + i if reset is false
+				pos += 1 if reset
+
+				if pos is @render.paths.mainPathArray.length
+					reset = true
+					pos = 0
+
+				if i is len
+					queue.push [queueStart, pos]
+				else if @render.animationBreakPoints.indexOf("#{@render.paths.mainPathStrings[pos]}") > -1
+					if i is currPosition
+
+					else	 
+						queue.push [queueStart, pos]
+						queueStart = pos	
+		
+
+		else	
+			for i in [currPosition..endPosition]
+
+				if i is endPosition
+					queue.push [queueStart, i]
+				else if @render.animationBreakPoints.indexOf("#{@render.paths.mainPathStrings[i]}") > -1
+					if i is currPosition
+
+					else	 
+						queue.push [queueStart, i]
+						queueStart = i		
+						
+				path.push @render.paths.mainPathArray[i]
+
+			
+		for x in queue
+			@animateTo(@render.paths.mainPathArray[x[1]])
 
 class Engine
 
@@ -111,19 +181,28 @@ class Engine
 			yellow  : [10, 1] 
 			red 	: [1, 10]
 			blue 	: [10, 10]
+
 	
 
 	constructor : ->
+		#some stuff im regretting
+		@paths.mainPathArray = @toArray @paths.mainPath
+		@paths.mainPathStrings = @arraytoString @paths.mainPathArray
+
 		#instantiate nesscary objects
 		@network = new Network()
 		@render = new Render()
 		@bindEvents()
 		
+		@tokens = {}
 		#perform tasks when the engine is ready 
 		@network.connect()
-		#@render.createBoard(@paths)
-		@displayGames()
+		@render.createBoard(@paths)
+		#@displayGames()
 
+		@tokens["red1"] = new Token("red", 1 , @render)
+
+		@tokens["red1"].animateTo @paths.mainPathArray[2]
 	
 
 
@@ -141,6 +220,17 @@ class Engine
 		@network.requestAvaliableGames (games) =>
 			@render.showAvaliableGames games
 
+	toArray: (obj) ->
+		array = []
+		for key, value of obj
+			array.push value
+		return array
+
+	arraytoString: (array) ->
+		array2 = []
+		for x in array
+			array2.push "#{x[0]},#{x[1]}"
+		return array2
 
 
 

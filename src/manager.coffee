@@ -12,14 +12,7 @@ class SocketManager
 	constructor: (@sockets) ->
 
 		@sockets.on "connection", (socket) =>
-			 socket.get "playerName", (error, playerName) =>   
-			     if !playerName?
-			        socket.emit "request player name", (name) =>
-				          socket.set("playerName", name)
-				          console.log("new player created called: #{name}")
-			     else
-			      	console.log playerName
-
+		
 
 		return @sockets
 

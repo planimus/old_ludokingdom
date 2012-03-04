@@ -4,22 +4,40 @@
 
 class Render
 
+	animationBreakPoints: [ 
+		"9,15",
+		"7,15",
+		"7,10",
+		"6,9" ,
+		"1,9" ,
+		"1,7" ,
+		"6,7" ,
+		"7,6" ,
+		"7,1" ,
+		"9,1" ,
+		"9,6" ,
+		"10,7" ,
+		"15,7" ,
+		"15,9" ,
+		"10,9" ,
+		"9,10" ]
+
 	constructor : -> 
 		@main = $("#main")
 		@viewCache = {}
-
+		@boxSize = 100/15
 	createBoard : (@paths) -> 
 
-		boardEl = $ "<div />", id : "board"
+		@boardEl = $ "<div />", id : "board"
 		@overlay = $ "<div />", id : "overlay", class : "boardOverlay"
 
-		@overlay = @createGridLinesOverlay(@overlay)
-		@overlay = @createBoxOverlay(@overlay)
-		@overlay = @createTeamArea(@overlay)
+		@overlay = @createGridLinesOverlay @overlay 
+		@overlay = @createBoxOverlay @overlay 
+		@overlay = @createTeamArea @overlay 
 
-		boardEl.append @overlay
+		@boardEl.append @overlay
 
-		@main.append boardEl
+		@main.append @boardEl
 
 	createBoxOverlay: (board) ->
 		line = 1
@@ -97,6 +115,12 @@ class Render
 		areas = board
 		for team, point of @paths.teamAreas
 			area = $ "<div />", id : "#{team}_area" , "class" : "team_area"
+			tokenHolder = $ "<div />", id : "#{team}_token_holder" , "class" : "token_holder"
+
+			for h in [1..4]
+				holder =  $ "<span />", id : "#{team}_holder" , "class" : "#{team} holder"
+				tokenHolder.append holder	
+			area.append tokenHolder
 			areas.append area
 
 		return areas	
@@ -167,7 +191,22 @@ class Render
 				@viewCache[template] = templateHtml
 				processed = Mustache.render templateHtml, view
 				callback processed
+	createToken: (team, id, callback) =>
+		elId = "token_#{team}#{id}"
+		token = $ "<span />", id : elId, class: "token"
+		token.append $("<img />", {src: "/images/#{team}.png"})
+		@boardEl.append token
+		@boardEl.on "click", "##{elId}", ->
+			callback()
+
+		return token
+	animateTokenTo: (token, cord) =>
+		left = (cord[0] - 1) * @boxSize;
+		top = (cord[1] - 1) * @boxSize;
+
+		token.animate { left : "#{left}%", top : "#{top}%"}, 300, ->
 			
+
 	elementExists: (el) ->
 		return false
 		return true if el.lenght isnt 0	
