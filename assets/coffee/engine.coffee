@@ -4,18 +4,19 @@
 class Token
 
 	constructor: (@team, @id, @render) ->
-		@position = 2
+		@position = 51
 
 		@el = @render.createToken @team, @id, =>
 			min = 1
 			max = 6
 			oldPosition = @position
 			random = Math.floor(Math.random() * (max - min + 1)) + min
+			$("#stat").append "you rolled #{random} </br>"
 			@position += random
-			if @position > @render.paths.mainPathArray.length
-				diff =  @position - @render.paths.mainPathArray.length
+			if @position > (@render.paths.mainPathArray.length - 1)
+				diff =  @position - ( @render.paths.mainPathArray.length - 1)
 				@position = diff
-
+	
 			@walkTo @render.paths.mainPathArray[oldPosition], @render.paths.mainPathArray[@position]
 			
 
@@ -24,26 +25,29 @@ class Token
 		@render.animateTokenTo(@el, cord)
 
 	walkTo: (cordStart, cordEnd) =>
-		#map out full path
+		
 		currPosition = @render.paths.mainPathStrings.indexOf "#{cordStart[0]},#{cordStart[1]}"
 		endPosition = @render.paths.mainPathStrings.indexOf "#{cordEnd[0]},#{cordEnd[1]}"
+		console.log cordStart, cordEnd
 		queue = []
 		queueStart = currPosition
 		path = []
 
 		if currPosition > endPosition
 			reset = false
-			len = @render.paths.mainPathArray.length - currPosition + endPosition 
+			len = @render.paths.mainPathArray.length - currPosition + endPosition - 1
 
 			for i in [0..len]
 
 				pos = currPosition + i if reset is false
 				pos += 1 if reset
 
-				if pos is @render.paths.mainPathArray.length
+				if pos is @render.paths.mainPathArray.length 
 					reset = true
 					pos = 0
+					console.log "resetting at #{i}"
 
+				console.log i, len	
 				if i is len
 					queue.push [queueStart, pos]
 				else if @render.animationBreakPoints.indexOf("#{@render.paths.mainPathStrings[pos]}") > -1
@@ -202,7 +206,7 @@ class Engine
 
 		@tokens["red1"] = new Token("red", 1 , @render)
 
-		@tokens["red1"].animateTo @paths.mainPathArray[2]
+		@tokens["red1"].animateTo @paths.mainPathArray[51]
 	
 
 
