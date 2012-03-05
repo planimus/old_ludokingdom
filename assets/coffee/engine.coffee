@@ -45,9 +45,7 @@ class Token
 				if pos is @render.paths.mainPathArray.length 
 					reset = true
 					pos = 0
-					console.log "resetting at #{i}"
-
-				console.log i, len	
+		
 				if i is len
 					queue.push [queueStart, pos]
 				else if @render.animationBreakPoints.indexOf("#{@render.paths.mainPathStrings[pos]}") > -1
@@ -203,9 +201,8 @@ class Engine
 		@network.connect()
 		@render.createBoard(@paths)
 		#@displayGames()
-
+ 
 		@tokens["red1"] = new Token("red", 1 , @render)
-
 		@tokens["red1"].animateTo @paths.mainPathArray[51]
 	
 
