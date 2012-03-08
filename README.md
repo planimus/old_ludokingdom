@@ -1,6 +1,6 @@
 Ludo Kingdom
 =============
-A free online multiplayer board game based on the classic board game ludo.
+A free online multiplayer board game based on the classic board game ludo..
 
 Pre-configuration
 -----------------
