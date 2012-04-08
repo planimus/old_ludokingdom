@@ -6,6 +6,7 @@ paths			=	require	'path'
 appWatcher 		= 	watch
 
 nodeInstance 	=	false
+testing			=   false
 
 projectDir 		=	"#{__dirname}"
 assets 			=	"#{ projectDir }/assets"
@@ -92,7 +93,24 @@ task 'compile:coffee', 'Compliles the coffee source code into javascript', (call
 			restartServer() if nodeInstance
 			console.log "#{stdout}  #{stderr}"
 			console.log("compilation coffee completed")
-	
+
+task 'compile:project:coffee', 'Compliles the coffee source code into javascript', (callback) ->
+	exec "coffee --compile --output #{projectDir}/common/ #{projectDir}/src/", (err, stdout, stderr) ->
+		if err
+			console.log stderr 
+			#throw err
+		console.log "#{stdout}  #{stderr}"
+		console.log("project compilation coffee completed")
+
+	exec "coffee --compile #{projectDir}/app.coffee", (err, stdout, stderr) ->
+		if err
+			console.log stderr 
+			#throw err
+		console.log "#{stdout}  #{stderr}"
+		console.log("app compilation coffee completed")
+		restartServer()	if nodeInstance
+		invoke "test" if testing
+
 task 'compile:less', 'Compliles the less source into css', (callback) ->
 	console.log "Compiling Less"
 	include_paths = ""
@@ -143,18 +161,32 @@ task 'watch:assets', 'Watches all the assets and compiles them if they change', 
 			console.log("#{file} (#{action})")
 			
 			invoke 'compile:less' if is_less
-			invoke 'compile:coffee' if is_coffee 
+			invoke 'compile:coffee' if is_coffee
 
-task 'watch:build', 'Watches the app.js for changes and starts it if down', ->
+task 'watch:project', 'Watches all the assets and compiles them if they change', (callback) ->
 	restartServerOrCreate()
-	appWatcher.add "#{projectDir}/app.js"
+	appWatcher.add "#{projectDir}/app.coffee"
+	appWatcher.add "#{projectDir}/src"
 	appWatcher.onChange (file , prev, curr, action) ->
-		console.log("app.js changed")
-		restartServerOrCreate()
+		invoke 'compile:project:coffee'
+
 
 task 'watch:build:all', 'Watches all files and complies and restart server if change', ->
 	invoke 'watch:assets'
-	invoke 'watch:build'			
+	invoke 'watch:project'
+
+task 'watch:test', 'Watches all files and complies and restart server if change', ->
+	testing = true
+	invoke 'test'
+	appWatcher.add "#{projectDir}/src"
+	appWatcher.add "#{projectDir}/test"
+	appWatcher.onChange (file , prev, curr, action) ->
+		invoke 'compile:project:coffee'
+
+task 'test', 'runs the test suite', ->	
+	test = exec "./node_modules/mocha/bin/mocha --growl", (err, stdout, stderr) ->
+		console.log "#{stdout}  #{stderr}"
+
 			
 			
 			

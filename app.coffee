@@ -4,7 +4,7 @@ game = require './common/game.js'
 manager = require './common/manager.js'  
 config = require './config.json'
 io = require 'socket.io'
-
+ 
 siteGlobals = 
 	css : config.css
 	js 	: config.js
@@ -23,13 +23,13 @@ app.configure ->
   app.use(express.static("#{__dirname}/public"));
   app.set 'view options', locals: siteGlobals
 
-
+ 
 sockets = io.listen(app).sockets
 socketManager = manager.sockets sockets
 gameManager = manager.games sockets
 
 
-gameManager.createGame "castle"
+gameManager.createGame "castl"
 gameManager.createGame "moutain"
 
 

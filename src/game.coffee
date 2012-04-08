@@ -1,5 +1,4 @@
 class Player
-
   constructor: (@socket) ->
 
     @socket.get "playerName", (error, playerName) =>
