@@ -8,3 +8,8 @@ Please run the follow commands to ensure not the corrupt the repo
 
 	git update-index --assume-unchanged config.json
 
+Contributors
+------------
+
+Shane Campbell 
+
