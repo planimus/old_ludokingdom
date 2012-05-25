@@ -10,6 +10,6 @@ Please run the follow commands to ensure not the corrupt the repo
 
 Contributors
 ------------
-
-Shane Campbell 
+Shane Campbell
+Kenrick Beckett 
 
